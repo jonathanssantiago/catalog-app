@@ -3,19 +3,23 @@ version: '3'
 services: 
     api_catalog:
         build: 
-            context: ./api_catalog
-            dockerfile: Dockerfile 
+            context: .
+            dockerfile: ./docker/python/python.dockerfile 
         expose: 
         - "5000"
         ports: 
         - "5000:5000"
         volumes: 
         - ./api_catalog:/src
+        networks:
+        - mongo-network
+        depends_on: 
+        - mongodb
 
     api_recomendations:
         build: 
-            context: ./api_recomendations
-            dockerfile: Dockerfile 
+            context: .
+            dockerfile: ./docker/node/node.dockerfile 
         expose: 
         - "3000"
         ports: 
@@ -26,7 +30,6 @@ services:
     mongodb:
         container_name: mongodb
         image: mongo
-        container_name: mongodb
         ports:
             - "27017:27017"
         networks:
@@ -35,9 +38,11 @@ services:
     mongo-seed:
         build: 
             context: .
-            dockerfile: mongoseed.dockerfile
+            dockerfile: ./docker/mongo/mongoseed.dockerfile
         links:
-            - mongodb
+        - mongodb
+        depends_on: 
+        - mongodb
         networks:
         - mongo-network
 
