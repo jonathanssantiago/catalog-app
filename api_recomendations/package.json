@@ -1,0 +1,14 @@
+{
+  "name": "linx-challenge",
+  "version": "1.0.0",
+  "description": "api catalog",
+  "main": "server.js",
+  "scripts": {
+    "dev": ""
+  },
+  "author": "Jonathan Santiago",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

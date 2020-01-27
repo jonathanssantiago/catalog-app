@@ -1,0 +1,46 @@
+version: '3'
+
+services: 
+    api_catalog:
+        build: 
+            context: ./api_catalog
+            dockerfile: Dockerfile 
+        expose: 
+        - "5000"
+        ports: 
+        - "5000:5000"
+        volumes: 
+        - ./api_catalog:/src
+
+    api_recomendations:
+        build: 
+            context: ./api_recomendations
+            dockerfile: Dockerfile 
+        expose: 
+        - "3000"
+        ports: 
+        - "3000:3000"
+        volumes: 
+        - ./api_recomendations:/app
+
+    mongodb:
+        container_name: mongodb
+        image: mongo
+        container_name: mongodb
+        ports:
+            - "27017:27017"
+        networks:
+        - mongo-network
+
+    mongo-seed:
+        build: 
+            context: .
+            dockerfile: mongoseed.dockerfile
+        links:
+            - mongodb
+        networks:
+        - mongo-network
+
+networks: 
+    mongo-network:
+      driver: bridge
