@@ -2,7 +2,7 @@ import api from './api';
 
 const getProductsMostPopular = async () => {
     try {
-        const response = await api('GET', 'http://localhost:5000/product/9101');
+        const response = await api('GET', 'http://localhost:3000/product/most-popular');
 
         return {
             status: true,
@@ -18,7 +18,7 @@ const getProductsMostPopular = async () => {
 
 const getProductsPriceReduction = async () => {
     try {
-        const response = await api('GET', 'http://localhost:5000/product/9101');
+        const response = await api('GET', 'http://localhost:3000/product/most-popular');
 
         return {
             status: true,
