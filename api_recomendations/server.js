@@ -6,7 +6,7 @@ const routes = require('./routes');
 app.use(cors());
 app.use('/products', routes);
 
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   res.status(err.status || 500).send({
     message: err.message,
     error: {}

@@ -1,6 +1,7 @@
  const express = require('express');
- const router = express.Router();
  const controller = require('./controllers');
+
+ const router = express.Router();
 
 router.get('/most-popular', async (req, res) => {
    const response = await controller.getProductsMostPopular(req);
