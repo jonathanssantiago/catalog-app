@@ -13,6 +13,7 @@ services:
         - ./api_catalog:/src
         networks:
         - mongo-network
+        - microservices
         depends_on: 
         - mongodb
 
@@ -26,6 +27,8 @@ services:
         - "3000:3000"
         volumes: 
         - ./api_recomendations:/app
+        networks:
+        - microservices
 
     mongodb:
         container_name: mongodb
@@ -48,4 +51,6 @@ services:
 
 networks: 
     mongo-network:
+      driver: bridge
+    microservices:
       driver: bridge

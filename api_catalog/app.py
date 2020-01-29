@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 
@@ -9,24 +9,23 @@ db = client.catalog
 
 @app.route('/product/<int:product_id>')
 def products(product_id):
-    _products = db.products.find({'id' : str(product_id)})
+    _product = db.products.find_one({'id' : str(product_id)})
 
-    complete = []
-    compact = []
+    if(_product == None):
+        abort(404)
 
-    for product in _products:
-        product.pop('_id')
-        complete.append(product)
-        compact.append({
-            'name': product['name'],
-            'price': product['price'],
-            'status' : product['status'],
-            'categories' : product['categories'],
-        })
+    _product.pop('_id')
+
+    compact = {
+        'name': _product['name'],
+        'price': _product['price'],
+        'status' : _product['status'],
+        'categories' : _product['categories'],
+    }
         
     return jsonify(
         status=True,
-        complete=complete,
+        complete=_product,
         compact=compact
     )
 

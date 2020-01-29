@@ -1,28 +1,17 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
 const app = express();
+const routes = require('./routes');
 
 app.use(cors());
+app.use('/products', routes);
 
-app.get('/product/most-popular', async (req, res) => {
-  try {
-    const response = await axios.get('https://wishlist.neemu.com/onsite/impulse-core/ranking/mostpopular.json');
-
-    let productsMostPopular = response.data;
-
-    if (!Object.keys(req.query).length || !req.query.maxProducts || req.query.maxProducts <= 10) {
-      productsMostPopular = productsMostPopular.slice(0, 10);
-    } else {
-      productsMostPopular = productsMostPopular.slice(0, req.query.maxProducts);
-    }
-
-    res.json(productsMostPopular);
-  } catch (e) {
-    res.status(500).send(e);
-  }
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500).send({
+    message: err.message,
+    error: {}
+  });
 });
-
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
