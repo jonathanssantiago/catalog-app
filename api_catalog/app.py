@@ -7,7 +7,7 @@ CORS(app)
 client = MongoClient('mongodb://mongodb:27017/catalog')
 db = client.catalog
 
-@app.route('/product/<int:product_id>')
+@app.route('/api/product/<int:product_id>')
 def products(product_id):
     _product = db.products.find_one({'id' : str(product_id)})
 

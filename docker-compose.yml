@@ -1,6 +1,15 @@
 version: '3'
 
 services: 
+    front:
+        build: 
+            context: .
+            dockerfile: ./docker/nginx/nginx.dockerfile
+        ports: 
+        - "8001:80"
+        networks:
+        - backend
+
     api_catalog:
         build: 
             context: .
@@ -8,7 +17,7 @@ services:
         expose: 
         - "5000"
         ports: 
-        - "5000:5000"
+        - "${API_CATALOG_PORT}:5000"
         volumes: 
         - ./api_catalog:/src
         networks:
@@ -24,12 +33,13 @@ services:
         expose: 
         - "3000"
         ports: 
-        - "3000:3000"
+        - "${API_RECOMENDATIONS_PORT}:3000"
         volumes: 
         - ./api_recomendations:/app
         networks: 
         - backend
         environment:
+        - PORT=3000
         - REDIS_URL=redis://cache
         - API_CATALOG_URL=api_catalog:5000
 
@@ -45,7 +55,7 @@ services:
         container_name: mongodb
         image: mongo
         ports:
-            - "27017:27017"
+        - "${MONGODB_PORT}:27017"
         networks:
         - mongo-network
 

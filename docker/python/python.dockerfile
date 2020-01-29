@@ -1,14 +1,3 @@
-# FROM python:3.7-alpine
-
-# COPY ./api_catalog /src
-
-# WORKDIR /src
-
-# RUN pip install -r requirements.txt
-# RUN pip install pymongo
-
-# ENTRYPOINT ["python3", "/src/app.py"]
-
 FROM alpine:3.7
 
 RUN apk update
