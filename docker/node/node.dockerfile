@@ -3,6 +3,7 @@ FROM node:lts-alpine
 # Create app directory
 WORKDIR /app
 
+
 RUN npm install nodemon -g
 
 # Install app dependencies
@@ -12,4 +13,4 @@ RUN npm install
 
 COPY ./api_recomendations .
 
-CMD [ "nodemon", "-L", "server.js" ]
+CMD [ "nodemon","-L", "main.js" ]

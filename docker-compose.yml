@@ -13,6 +13,7 @@ services:
         - ./api_catalog:/src
         networks:
         - mongo-network
+        - backend
         depends_on: 
         - mongodb
 
@@ -26,6 +27,19 @@ services:
         - "3000:3000"
         volumes: 
         - ./api_recomendations:/app
+        networks: 
+        - backend
+        environment:
+        - REDIS_URL=redis://cache
+        - API_CATALOG_URL=api_catalog:5000
+
+    redis:
+        image: redis
+        container_name: cache
+        networks: 
+        - backend
+        expose:
+        - 6379
 
     mongodb:
         container_name: mongodb
@@ -48,4 +62,6 @@ services:
 
 networks: 
     mongo-network:
+      driver: bridge
+    backend:
       driver: bridge
