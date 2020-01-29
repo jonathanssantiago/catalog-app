@@ -1,30 +1,21 @@
 const Services = require('./../services');
 
-const getProductsMostPopular = async (req) => {
+const getProducts = async (req) => {
     let paramMaxProducts = null;
 
     if (Object.keys(req.query).length && req.query.maxProducts) {
         paramMaxProducts = req.query.maxProducts;
     }
 
-    const data = await Services.productsMostPopularService(paramMaxProducts);
+    const productsMostPopular = await Services.productsMostPopularService(paramMaxProducts);
+    const productsPriceReduction = await Services.productsPriceReductionService(paramMaxProducts);
 
-    return data;
-};
-
-const getProductsPriceReduction = async (req) => {
-    let paramMaxProducts = null;
-
-    if (Object.keys(req.query).length && req.query.maxProducts) {
-        paramMaxProducts = req.query.maxProducts;
-    }
-
-    const data = await Services.productsPriceReductionService(paramMaxProducts);
-
-    return data;
+    return {
+        "most_popular": productsMostPopular,
+        "price_reduction": productsPriceReduction
+    };
 };
 
 module.exports = {
-    getProductsMostPopular,
-    getProductsPriceReduction
+    getProducts
 };
