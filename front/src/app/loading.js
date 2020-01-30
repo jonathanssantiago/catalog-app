@@ -14,6 +14,7 @@ const startLoading = () => {
     textLoading.appendChild(document.createTextNode("carregando..."));
     divLoading.appendChild(textLoading);
     carouselSliders.appendChild(divLoading);
+    divLoading.style.marginTop = '40vh';
     divLoading.style.display = 'flex';
     divLoading.style.flexDirection = 'column';
     divLoading.style.alignItems = 'center';

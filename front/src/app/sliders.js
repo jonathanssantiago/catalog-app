@@ -9,11 +9,11 @@ const listProductsMostPopular = products => {
             <h3>${v.name}</h3> 
             <div class="price-product">
                 <small> Por </small> 
-                <h3>${v.price}</h3>
+                <h3>${Number(v.price).toFixed(2)}</h3>
             </div> 
             <div class="price-product">
                 <small>${v.installment.count}x</small> 
-                <h5>R$ ${v.installment.price}</h5> 
+                <h5>R$ ${Number(v.installment.price).toFixed(2)}</h5> 
             </div>
         </div>`);
     });
@@ -50,11 +50,11 @@ const listProductsPriceReduction = products => {
             <h3>${v.name}</h3> 
             <div class="price-product">
                 <small> Por </small> 
-                <h3>${v.price}</h3>
+                <h3>${Number(v.price).toFixed(2)}</h3>
             </div> 
             <div class="price-product">
                 <small>${v.installment.count}x</small> 
-                <h5>R$ ${v.installment.price}</h5> 
+                <h5>R$ ${Number(v.installment.price).toFixed(2)}</h5> 
             </div>
         </div>`);
     });
