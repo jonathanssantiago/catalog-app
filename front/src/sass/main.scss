@@ -29,9 +29,6 @@ header{
   }
 }
 
-// .card{
-// }
-
 .title{
   color: $primary;
   text-align: center;
@@ -54,7 +51,8 @@ header{
     margin: 20px 0;
 
     .item {
-      padding: 0 2px;
+      max-width: 250px;
+      padding: 0 30px;
       transition: $duration all;
       
       &:hover { 
@@ -63,8 +61,7 @@ header{
       }
 
       img{
-        // max-width: 320px;
-        max-height: 280px;
+        width: 180px;
       }
 
       .price-product{
@@ -87,7 +84,8 @@ header{
       padding: 40px;
       text-align: center;
       z-index: 1;
-      
+      cursor: pointer;
+
       &:nth-of-type(1) {
         top:0; bottom:0; left:0;
       }
@@ -100,9 +98,9 @@ header{
   }
 }
 
-// Remove the arrow for Mobile
-@media only screen and (max-width: 600px) {
-  a.arrow__btn {
-    display:none;
-  }
-}
+// // Remove the arrow for Mobile
+// @media only screen and (max-width: 600px) {
+//   a.arrow__btn {
+//     display:none;
+//   }
+// }

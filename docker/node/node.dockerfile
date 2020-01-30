@@ -6,6 +6,8 @@ WORKDIR /app
 # Install app dependencies
 COPY ./api_recomendations/package*.json ./
 
+RUN npm install nodemon -G
+
 RUN npm install
 
 COPY ./api_recomendations .
