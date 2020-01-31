@@ -1,12 +1,8 @@
 FROM node:lts-alpine
 
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
-COPY ./api_recomendations/package*.json ./
-
-RUN npm install nodemon -G
+COPY ./api_recomendations/package*.json .
 
 RUN npm install
 

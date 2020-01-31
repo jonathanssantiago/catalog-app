@@ -35,7 +35,8 @@ services:
         ports: 
         - "${API_RECOMENDATIONS_PORT}:3000"
         volumes: 
-        - ./api_recomendations:/app
+        - ./api_recomendations/:/app
+        - /app/node_modules
         networks: 
         - backend
         environment:
