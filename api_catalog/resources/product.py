@@ -1,18 +1,15 @@
 from flask_restful import Resource
 from models.product import ProductModel
 import json
-# from app import redis
+from app import redis
 
 class Product(Resource):
     def get(self, product_id):
-        # if redis.get('catalog.product-' + str(product_id)) != None:
-        #     return json.loads(redis.get('catalog.product-' + str(product_id))), 200
+        if redis.get('catalog.product-' + str(product_id)) != None:
+            return json.loads(redis.get('catalog.product-' + str(product_id))), 200
 
         product = ProductModel.get_product(product_id)
 
-        print(product)
-        print(type(product))
-        
         if(product == None):
             return {'message': 'Product not found.'}, 404
 
@@ -25,10 +22,10 @@ class Product(Resource):
             'categories' : product['categories'],
         }
 
-        # redis.set(
-        #     'catalog.product-' + str(product_id), 
-        #     json.dumps({'complete': product, 'compact': compact}), 
-        #     ex=(60*5)
-        # )
+        redis.set(
+            'catalog.product-' + str(product_id), 
+            json.dumps({'complete': product, 'compact': compact}), 
+            ex=(60*5)
+        )
 
         return {"compact" : compact, "complete": product}, 200
