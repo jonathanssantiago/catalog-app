@@ -1,37 +1,16 @@
 const axios = require("axios");
 const redis = require("redis");
 const cache = redis.createClient(process.env.REDIS_URL);
+const { promisify } = require('util');
+const getCacheAsync = promisify(cache.get).bind(cache);
 
-const requestApiCatalog = async idProduct => {
-    try {
-        const response = await axios.get(
-            `http://${process.env.API_CATALOG_URL}/api/product/${idProduct}`
-        );
-        return Promise.resolve(response.data);
-    } catch (e) {
-        return Promise.resolve(null);
-    }
-};
+function ProductService() {
 
-const productsMostPopularService = async maxProducts => {
+}
+
+ProductService.prototype.getProductsMostPopular = async maxProducts => {
     try {
-        const productsMostPopular = await new Promise(async (resolve) => {
-            cache.get("products-most-popular", async (err, data) => {
-                if (!data) {
-                    const responseApiRecomendation = await axios.get(
-                        "https://wishlist.neemu.com/onsite/impulse-core/ranking/mostpopular.json"
-                    );
-                    cache.set(
-                        "products-most-popular",
-                        JSON.stringify(responseApiRecomendation.data)
-                    );
-                    cache.expire("products-most-popular", 60 * 3);
-                    resolve(responseApiRecomendation.data);
-                } else {
-                    resolve(JSON.parse(data));
-                }
-            });
-        });
+        const productsMostPopular = await requestApiProductsMostPopular();
 
         const responseApiCatalog = await Promise.all(
             productsMostPopular.map(
@@ -59,25 +38,9 @@ const productsMostPopularService = async maxProducts => {
     }
 };
 
-const productsPriceReductionService = async maxProducts => {
+ProductService.prototype.getProductsPriceReduction = async maxProducts => {
     try {
-        const productsPriceReduction = await new Promise(async resolve => {
-            cache.get("products-price-reduction", async (err, data) => {
-                if (!data) {
-                    const responseApiRecomendation = await axios.get(
-                        "https://wishlist.neemu.com/onsite/impulse-core/ranking/pricereduction.json"
-                    );
-                    cache.set(
-                        "products-price-reduction",
-                        JSON.stringify(responseApiRecomendation.data)
-                    );
-                    cache.expire("products-price-reduction", 60 * 3);
-                    resolve(responseApiRecomendation.data);
-                } else {
-                    resolve(JSON.parse(data));
-                }
-            });
-        });
+        const productsPriceReduction = await requestApiProductsPriceReduction();
 
         const responseApiCatalog = await Promise.all(
             productsPriceReduction.map(
@@ -105,7 +68,52 @@ const productsPriceReductionService = async maxProducts => {
     }
 };
 
-module.exports = {
-    productsMostPopularService,
-    productsPriceReductionService
+const requestApiCatalog = async idProduct => {
+    try {
+        const getProductCatalogCache = await getCacheAsync(`catalog.product-${idProduct}`);
+
+        if (!getProductCatalogCache) {
+            responseApiCatalog = await axios.get(
+                `http://${process.env.API_CATALOG_URL}/api/product/${idProduct}`
+            );
+
+            return responseApiCatalog.data;
+        }
+
+        return JSON.parse(getProductCatalogCache);
+    } catch (e) {
+        return null;
+    }
 };
+
+const requestApiProductsMostPopular = async () => {
+    const getProductsMostPopularCache = await getCacheAsync('recomendations.products-most-popular');
+
+    if (!getProductsMostPopularCache) {
+        const responseApiRecomendation = await axios.get(
+            "https://wishlist.neemu.com/onsite/impulse-core/ranking/mostpopular.json"
+        );
+        cache.set("recomendations.products-most-popular", JSON.stringify(responseApiRecomendation.data));
+        cache.expire("recomendations.products-most-popular", 60 * 5);
+
+        return responseApiRecomendation.data;
+    }
+    return JSON.parse(getProductsMostPopularCache);
+}
+
+const requestApiProductsPriceReduction = async () => {
+    const getProductsPriceReductionCache = await getCacheAsync('recomendations.products-price-reduction');
+
+    if (!getProductsPriceReductionCache) {
+        const responseApiRecomendation = await axios.get(
+            "https://wishlist.neemu.com/onsite/impulse-core/ranking/pricereduction.json"
+        );
+        cache.set("recomendations.products-price-reduction", JSON.stringify(responseApiRecomendation.data));
+        cache.expire("recomendations.products-price-reduction", 60 * 5);
+
+        return responseApiRecomendation.data;
+    }
+    return JSON.parse(getProductsPriceReductionCache);
+}
+
+module.exports.ProductService = new ProductService;
