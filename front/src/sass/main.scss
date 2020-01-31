@@ -29,6 +29,10 @@ header{
   }
 }
 
+.card{
+  user-select: none;
+}
+
 .title{
   color: $primary;
   text-align: center;
