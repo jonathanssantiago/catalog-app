@@ -1,0 +1,98 @@
+openapi: "3.0.0"
+info:
+  description: "."
+  version: "1.0.0"
+  title: "API's Linx Challenge"
+  contact:
+    email: "jonathan.santiago@live.com"
+servers:
+  - url: "http://localhost:5001/api"
+    description: "Catalog API"
+  - url: "http://localhost:3003/api"
+    description: "Recomendations API"
+paths:
+  /product/{product_id}:
+    get:
+      tags: 
+      - Catalog API
+      summary: Details of specific product  
+      parameters: 
+      - name: "product_id"
+        in: "path"
+        description: "ID of product to return"
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Expected to response to a valid request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CatalogProductById"
+        '404':
+          description: Product not found.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /products:
+      get:
+        tags: 
+        - Recomendations API
+        summary: List of recommendations  products
+        responses:
+          '200':
+            description: Expected to response to a valid request.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/RecomendationsProducts"
+          '404':
+            description: Page not found.
+            content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/Error'
+          default:
+            description: unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    CatalogProductById:
+      type: object
+      required:
+        - complete
+        - compact
+      properties:
+        complete:
+          type: object
+        compact:
+          type: object
+    RecomendationsProducts:
+      type: object
+      required:
+        - most_popular
+        - price_reduction
+      properties:
+        most_popular:
+          type: object
+        price_reduction:
+          type: object
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    
