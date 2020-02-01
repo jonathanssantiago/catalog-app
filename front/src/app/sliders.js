@@ -5,15 +5,21 @@ const listProductsMostPopular = products => {
     products.forEach((v, k) => {
         itensMostPopular.push(`
         <div class="item">
+            <div class="rating">
+                <span>${k+1}°<span/>
+            </div>
             <img src="https:${v.images.default}">
             <h3>${v.name}</h3> 
+            <div class="old-price-product">
+                <h6 class="strikethrough">R$${Number(v.oldPrice).toFixed(2)}<h6>
+            </div>
             <div class="price-product">
                 <small> Por </small> 
-                <h3>${Number(v.price).toFixed(2)}</h3>
+                <h3>R$ ${Number(v.price).toFixed(2)}</h3>
             </div> 
             <div class="price-product">
                 <small>${v.installment.count}x</small> 
-                <h5>R$ ${Number(v.installment.price).toFixed(2)}</h5> 
+                <h4>R$ ${Number(v.installment.price).toFixed(2)}</h4> 
             </div>
         </div>`);
     });
@@ -46,15 +52,21 @@ const listProductsPriceReduction = products => {
     products.forEach((v, k) => {
         itensPriceReduction.push(`
         <div class="item">
+            <div class="discount-rate">
+                <span>${((Number(v.oldPrice) * 100)/Number(v.price)).toFixed(0) - 100}%<span/>
+            </div>
             <img src="https:${v.images.default}">
             <h3>${v.name}</h3> 
+            <div class="old-price-product">
+                <h6 class="strikethrough">R$${Number(v.oldPrice).toFixed(2)}<h6>
+            </div>
             <div class="price-product">
                 <small> Por </small> 
-                <h3>${Number(v.price).toFixed(2)}</h3>
+                <h3>R$ ${Number(v.price).toFixed(2)}</h3>
             </div> 
             <div class="price-product">
                 <small>${v.installment.count}x</small> 
-                <h5>R$ ${Number(v.installment.price).toFixed(2)}</h5> 
+                <h4>R$ ${Number(v.installment.price).toFixed(2)}</h4> 
             </div>
         </div>`);
     });

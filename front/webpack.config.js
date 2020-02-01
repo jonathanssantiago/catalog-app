@@ -44,7 +44,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                'API_RECOMENDATIONS_PORT': JSON.stringify(process.env.API_RECOMENDATIONS_PORT) || '3000',
+                'API_RECOMENDATIONS_PORT': JSON.stringify(process.env.API_RECOMENDATIONS_PORT) || '3003',
             },
         }),
         new MiniCssExtractPlugin({
