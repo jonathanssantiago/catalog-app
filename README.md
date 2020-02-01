@@ -2,6 +2,11 @@
 
 ## API's
 
+É possível acessar a documentação das APIs através do Swagger online importando o arquivo
+swagger.yaml
+
+Link Swagger Online: https://editor.swagger.io
+
 ### Api de Catálogo
 
 API REST para servir os dados de um produto.
@@ -21,14 +26,9 @@ Tecnologias Utilizadas:
 * NodeJS
 * Redis
 
-É possível acessar a documentação das APIs através do Swagger online importando o arquivo
-swagger.yaml
-
-Link Swagger Online: https://editor.swagger.io
-
 ### Front-end
 
-Aplicação cliente para as vitrines de recomendações.
+Aplicação cliente para a exibição das vitrines de recomendações.
 
 Tecnologias Utilizadas:
 
