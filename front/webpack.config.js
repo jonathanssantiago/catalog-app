@@ -1,5 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.js',
@@ -40,8 +42,17 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                'API_RECOMENDATIONS_PORT': JSON.stringify(process.env.API_RECOMENDATIONS_PORT) || '3000',
+            },
+        }),
         new MiniCssExtractPlugin({
             filename: "css/[name].css"
+        }),
+        new HtmlWebpackPlugin({
+            template: 'src/index.html',
+            filename: "index.html"
         })
     ]
 }

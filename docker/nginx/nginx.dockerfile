@@ -1,5 +1,9 @@
 # estágio de compilação
 FROM node:10.15.3-alpine as build-stage
+
+ARG API_RECOMENDATIONS_PORT
+ENV API_RECOMENDATIONS_PORT=$API_RECOMENDATIONS_PORT
+
 WORKDIR /app
 COPY ./front/package*.json ./
 RUN npm install

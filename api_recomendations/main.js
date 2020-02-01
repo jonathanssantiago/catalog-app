@@ -26,11 +26,13 @@ server.on('request', async (req, res) => {
                 'Access-Control-Allow-Origin': '*'
             });
 
-            res.end(JSON.stringify({ error: e }));
+            res.end(JSON.stringify({ message: e }));
         }
     } else {
         res.writeHead(404);
-        res.end();
+        res.end(JSON.stringify({
+            message: 'page not found.'
+        }));
     }
 });
 

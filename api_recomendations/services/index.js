@@ -90,11 +90,12 @@ const requestApiProductsMostPopular = async () => {
     const getProductsMostPopularCache = await getCacheAsync('recomendations.products-most-popular');
 
     if (!getProductsMostPopularCache) {
+        console.log('sem cachceee');
         const responseApiRecomendation = await axios.get(
             "https://wishlist.neemu.com/onsite/impulse-core/ranking/mostpopular.json"
         );
         cache.set("recomendations.products-most-popular", JSON.stringify(responseApiRecomendation.data));
-        cache.expire("recomendations.products-most-popular", 60 * 5);
+        cache.expire("recomendations.products-most-popular", 60 * Number(process.env.CACHE_RECOMENDATIONS_PRODUCTS_EXPIRE));
 
         return responseApiRecomendation.data;
     }
@@ -109,7 +110,7 @@ const requestApiProductsPriceReduction = async () => {
             "https://wishlist.neemu.com/onsite/impulse-core/ranking/pricereduction.json"
         );
         cache.set("recomendations.products-price-reduction", JSON.stringify(responseApiRecomendation.data));
-        cache.expire("recomendations.products-price-reduction", 60 * 5);
+        cache.expire("recomendations.products-price-reduction", 60 * Number(process.env.CACHE_RECOMENDATIONS_PRODUCTS_EXPIRE));
 
         return responseApiRecomendation.data;
     }

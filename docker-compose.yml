@@ -2,74 +2,83 @@ version: '3'
 
 services: 
     front:
+        container_name: linx_challenge_frontend
         build: 
             context: .
             dockerfile: ./docker/nginx/nginx.dockerfile
+            args:
+                API_RECOMENDATIONS_PORT: ${API_RECOMENDATIONS_PORT}
         ports: 
-        - "8001:80"
+            - "8001:80"
         networks:
-        - backend
+            - backend
 
     api_catalog:
+        container_name: linx_challenge_api_catalog
         build: 
             context: .
             dockerfile: ./docker/python/python.dockerfile 
         expose: 
-        - "5000"
+            - "5000"
         ports: 
-        - "${API_CATALOG_PORT}:5000"
+            - "${API_CATALOG_PORT}:5000"
+        environment: 
+            - CACHE_CATALOG_PRODUCTS_EXPIRE=${CACHE_CATALOG_PRODUCTS_EXPIRE}
         volumes: 
-        - ./api_catalog:/src
+            - ./api_catalog:/src
         networks:
-        - mongo-network
-        - backend
+            - mongo-network
+            - backend
         depends_on: 
-        - mongodb
+            - mongodb
 
     api_recomendations:
+        container_name: linx_challenge_api_recomendations
         build: 
             context: .
             dockerfile: ./docker/node/node.dockerfile 
         expose: 
-        - "3000"
+            - "3000"
         ports: 
-        - "${API_RECOMENDATIONS_PORT}:3000"
+            - "${API_RECOMENDATIONS_PORT}:3000"
         volumes: 
-        - ./api_recomendations/:/app
-        - /app/node_modules
+            - ./api_recomendations/:/app
+            - /app/node_modules
         networks: 
-        - backend
+            - backend
         environment:
-        - PORT=3000
-        - REDIS_URL=redis://cache
-        - API_CATALOG_URL=api_catalog:5000
-
+            - PORT=3000
+            - REDIS_URL=redis://linx_challenge_redis
+            - API_CATALOG_URL=api_catalog:5000
+            - CACHE_RECOMENDATIONS_PRODUCTS_EXPIRE=${CACHE_RECOMENDATIONS_PRODUCTS_EXPIRE}
+            
     redis:
         image: redis
-        container_name: cache
+        container_name: linx_challenge_redis
         networks: 
-        - backend
+            - backend
         expose:
-        - 6379
+            - 6379
 
     mongodb:
-        container_name: mongodb
+        container_name: linx_chalenge_mongodb
         image: mongo
         ports:
-        - "${MONGODB_PORT}:27017"
+            - "${MONGODB_PORT}:27017"
         networks:
-        - mongo-network
+            - mongo-network
 
     mongo-seed:
+        container_name: linx_chalenge_mongoseed
         build: 
             context: .
             dockerfile: ./docker/mongo/mongoseed.dockerfile
         links:
-        - mongodb
+            - mongodb
         depends_on: 
-        - mongodb
+            - mongodb
         networks:
-        - mongo-network
+            - mongo-network
 
 networks: 
     mongo-network:
