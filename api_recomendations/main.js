@@ -25,7 +25,6 @@ server.on('request', async (req, res) => {
                 'Content-Type': 'text/json',
                 'Access-Control-Allow-Origin': '*'
             });
-
             res.end(JSON.stringify({ message: e }));
         }
     } else {
@@ -37,5 +36,4 @@ server.on('request', async (req, res) => {
 });
 
 server.listen(PORT);
-
 console.log(`Running on http://${HOST}:${PORT}`);

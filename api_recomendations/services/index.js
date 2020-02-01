@@ -8,7 +8,7 @@ function ProductService() {
 
 }
 
-ProductService.prototype.getProductsMostPopular = async maxProducts => {
+ProductService.prototype.getProductsMostPopular = async () => {
     try {
         const productsMostPopular = await requestApiProductsMostPopular();
 
@@ -22,23 +22,13 @@ ProductService.prototype.getProductsMostPopular = async maxProducts => {
             .filter(r => r !== null && r.complete.status === "AVAILABLE")
             .map(r => r.complete);
 
-        let data = getProducts;
-
-        if (maxProducts) {
-            if (maxProducts <= 10) {
-                data = getProducts.slice(0, 10);
-            } else {
-                data = getProducts.slice(0, maxProducts);
-            }
-        }
-
-        return data;
+        return getProducts;
     } catch (e) {
         return [];
     }
 };
 
-ProductService.prototype.getProductsPriceReduction = async maxProducts => {
+ProductService.prototype.getProductsPriceReduction = async () => {
     try {
         const productsPriceReduction = await requestApiProductsPriceReduction();
 
@@ -52,17 +42,7 @@ ProductService.prototype.getProductsPriceReduction = async maxProducts => {
             .filter(r => r !== null && r.complete.status === "AVAILABLE")
             .map(r => r.complete);
 
-        let data = getProducts;
-
-        if (maxProducts) {
-            if (maxProducts <= 10) {
-                data = getProducts.slice(0, 10);
-            } else {
-                data = getProducts.slice(0, maxProducts);
-            }
-        }
-
-        return data;
+        return getProducts;
     } catch (e) {
         return [];
     }
@@ -90,7 +70,6 @@ const requestApiProductsMostPopular = async () => {
     const getProductsMostPopularCache = await getCacheAsync('recomendations.products-most-popular');
 
     if (!getProductsMostPopularCache) {
-        console.log('sem cachceee');
         const responseApiRecomendation = await axios.get(
             "https://wishlist.neemu.com/onsite/impulse-core/ranking/mostpopular.json"
         );
