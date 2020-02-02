@@ -17,7 +17,6 @@ ProductService.prototype.getProductsMostPopular = async () => {
                 async p => await requestApiCatalog(p.recommendedProduct.id)
             )
         );
-
         const getProducts = responseApiCatalog
             .filter(r => r !== null && r.complete.status === "AVAILABLE")
             .map(r => r.complete);
@@ -53,10 +52,9 @@ const requestApiCatalog = async idProduct => {
         const getProductCatalogCache = await getCacheAsync(`catalog.product-${idProduct}`);
 
         if (!getProductCatalogCache) {
-            responseApiCatalog = await axios.get(
+            const responseApiCatalog = await axios.get(
                 `http://${process.env.API_CATALOG_URL}/api/product/${idProduct}`
             );
-
             return responseApiCatalog.data;
         }
 
