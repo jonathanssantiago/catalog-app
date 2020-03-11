@@ -1,4 +1,4 @@
-# Linx Challenge
+# Catalog APP
 
 ## API's
 
